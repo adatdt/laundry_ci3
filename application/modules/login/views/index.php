@@ -34,6 +34,11 @@
         margin-bottom: 10px;
     }
 
+	body
+	{
+		background-color: #343a40;	
+	}
+
 #body-row {
     margin-left:0;
     margin-right:0;
@@ -99,10 +104,11 @@
 }
 
 .card-body{
-	box-shadow: 0px 17px 12px -5px rgba(149,184,191,0.75);
+	/* box-shadow: 0px 17px 12px -5px rgba(149,184,191,0.75);
 	-webkit-box-shadow: 0px 17px 12px -5px rgba(149,184,191,0.75);
-	-moz-box-shadow: 0px 17px 12px -5px rgba(149,184,191,0.75);
-	background-color:#446491;
+	-moz-box-shadow: 0px 17px 12px -5px rgba(149,184,191,0.75); */
+	background-color:#343a40;
+
 }
 
 </style>
@@ -112,8 +118,8 @@
 	    <div class="row">
 		    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
 		        <div class="card card-signin my-5">
-			        <div class="card-body">
-			            <h5 class="card-title text-center">Log In Member Laundry</h5>
+			        <div class="card-body text-white">
+			            <h5 class="card-title text-center">Member Laundry</h5>
 			            <form class="form-signin" id="form-login" action="<?= site_url() ?>login/actionLogin" method="post" >
 				            <div class="form-label-group">
 				                <label for="username">Username</label>
@@ -127,7 +133,8 @@
 			              	<p></p>
 
 			              	<div class="btn btn-sm btn-danger btn-block text-uppercase" id="submit"><i class="fa fa-user-o" aria-hidden="true"></i> Masuk</div>
-			              	<hr class="my-4">
+							  Kembali ke <a href="<?= site_url()?>home">Home</a>
+			              	
 
 			            </form>
 			        </div>

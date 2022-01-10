@@ -2,12 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * -----------------------
- * CLASS NAME : Port_model
- * -----------------------
  *
- * @author     Robai <robai.rastim@gmail.com>
- * @copyright  2018
+ * @author     adat <adatdt@gmail.com>
+ * @copyright  2022
  *
  */
 
