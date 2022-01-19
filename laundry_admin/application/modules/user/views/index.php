@@ -38,6 +38,8 @@
 			            <th>Username</th>
 			            <th>alamat</th>
 			            <th>No Hp</th>
+						<th>Email</th>
+						<th>Status</th>
 			            <th>Aksi</th>
 			        </tr>
 			    </thead>
@@ -124,14 +126,22 @@
 								<div class="form-group row">
 								    <label for="name" class="col-sm-4 col-form-label">group<span style="color: red">*</span> :</label>
 								    <div class="col-sm-8">
-								      <select  class="form-control" id="idGroup" name="idGroup"  required>
-								      		<option value="">Pilih</option>
-								      		<option value="1">Admin</option>
-								      </select>
+									  <?= form_dropdown("idGroup",$dataUserGroup,"",'class="form-control" id="idGroup"  required') ?>
 								    </div>
 								</div>
 
-							</div>														
+							</div>		
+
+							<div class="col-md-6">
+								
+								<div class="form-group row">
+								    <label for="name" class="col-sm-4 col-form-label">Email :</label>
+								    <div class="col-sm-8">
+								      <input type="email" class="form-control" id="email" placeholder="Email" name="email" >
+								    </div>
+								</div>
+
+							</div>																				
 
 
 
@@ -214,14 +224,24 @@
 							<div class="form-group row">
 							    <label for="name" class="col-sm-4 col-form-label">group<span style="color: red">*</span> :</label>
 							    <div class="col-sm-8">
-							      <select  class="form-control" id="idGroupEdit" name="idGroupEdit"  required>
-							      		<option value="">Pilih</option>
-							      		<option value="1">Admin</option>
-							      </select>
+
+								  <?= form_dropdown("idGroupEdit",$dataUserGroup,"",'class="form-control" id="idGroupEdit"  required disabled') ?>
+								  
 							    </div>
 							</div>
 
-						</div>														
+						</div>
+						
+						<div class="col-md-6">
+								
+								<div class="form-group row">
+								    <label for="name" class="col-sm-4 col-form-label">Email :</label>
+								    <div class="col-sm-8">
+								      <input type="email" class="form-control" id="emailEdit" placeholder="Email" name="emailEdit" >
+								    </div>
+								</div>
+
+							</div>							
 
 
 
@@ -237,8 +257,6 @@
 	    </div>
 	</div> 		
 
-
-
 	<!-- Modal  delete-->
 	<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	    <div class="modal-lg modal-dialog modal-dialog-centered" role="document">
@@ -251,8 +269,9 @@
 	                	                
 						<div class="row">
 							<div class="col-md-12 text-center">								
-								Apakah anda Yakin ingin Menghapus data ini
+								<span id="pesanData">Apakah anda Yakin ingin Menghapus data ini</span>
 								<input type="hidden" name="idDelete" id="idDelete">
+								<input type="hidden" name="statusDelete" id="statusDelete">
 							</div>
 
 						</div>
@@ -303,7 +322,7 @@
 	    });
 
 	    $("#delete").on("click",function(){
-	    	var data ={idDelete:$("#idDelete").val()};
+	    	var data ={idDelete:$("#idDelete").val(),statusDelete:$("#statusDelete").val()};
 	    	var url ="<?= site_url()?>user/actionDelete";
 	    	myData.actionDelete(data, url)
 	    });	    	    

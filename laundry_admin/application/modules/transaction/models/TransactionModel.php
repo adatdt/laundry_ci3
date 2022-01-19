@@ -23,22 +23,34 @@ class TransactionModel extends MY_Model{
 		$dateFrom=$this->input->post("dateFrom");
 		$dateTo=$this->input->post("dateTo");
 		$status=$this->input->post("status");
+		$statusProces=$this->input->post("statusProces");
 
-		$where = " where CAST(tr.created_on as date) BETWEEN '{$dateFrom}' and '{$dateTo}'  ";
+		$where = " where  ts.status is not null and CAST(ts.created_on AS DATE)  between '{$dateFrom}' and '{$dateTo}' ";
+
+		if(!empty($status))
+		{
+			$where .=" and ts.status_payment=$status ";		
+		}
+
+		if(!empty($statusProces))
+		{
+			$where .=" and ts.status_proces=$statusProces ";
+		}
 
 		if(!empty($cari))
 		{
-			$where .= " and ( transaction_code like '%{$cari}%' ) ";
-		}
+			$where .=" and (
+					ts.transaction_code like '%$cari%'
+					or ts.email like '%$cari%'
+					or ts.no_hp like '%$cari%'
+					or ts.user_transaction like '%$cari%'
+			) ";
+		}		
 
-		if($status<>"")
-		{
-			$where .= " and ( tr.status='{$status}' ) ";	
-		}
 
+		$qry=$this->qry($where." order by ts.id desc ");
 
-		$qry=$this->qry($where);
-
+		// die($qry); exit;
 
 		$getData=$this->db->query($qry)->result();
 
@@ -48,21 +60,37 @@ class TransactionModel extends MY_Model{
 		foreach ($getData as $key => $value) 
 		{
 			$value->action="";
-			$value->action .="<button class='btn btn-primary btn-sm' onClick=myData.getDetail('".$value->transaction_code."') >Detail</button> ";
 
-			if($value->status==1)
-			{
-				$value->action .="<button class='btn btn-success btn-sm' onClick=myData.getUpdateStatus('".$value->id."') >Kirim</button>";
-				$value->status='<h6><span class="badge badge-warning">Dibayar</span></h6>';
-			}	
-			elseif ($value->status==2) 
-			{
-				$value->status='<h6><span class="badge badge-success">Berhasil</span></h6>';	
+			$value->icon='<span  class="badge badge-success"><i class="fa fa-plus" aria-hidden="true"></i></span>';
+
+			$value->total_amount="<span  id='td_total_amount{$value->transaction_code}'>".formatUang($value->total_amount)."</span>";
+			$value->total_weight="<span  id='td_total_weight{$value->transaction_code}'>".formatUang($value->total_weight)."</span>";
+			
+			switch ($value->status_proces) {
+				case '2':
+						$value->status_proces2="<span id='td_penjemputan_{$value->transaction_code}'><span  class='badge badge-warning'>Penjemputan</span></span>";
+					break;
+				case '3':
+					$value->status_proces2="<span id='td_penjemputan_{$value->transaction_code}'><span  class='badge badge-warning' >Proses</span></span>";
+				break;
+				case '4':
+					$value->status_proces2="<span id='td_penjemputan_{$value->transaction_code}'><span  class='badge badge-warning'>Pengiriman</span></span>";
+				break;				
+				case '5':
+					$value->status_proces2="<span id='td_penjemputan_{$value->transaction_code}'><span  class='badge badge-success'>Selesai</span></span>";
+				break;				
+				case '6':
+					$value->status_proces2="<span id='td_penjemputan_{$value->transaction_code}'><span  class='badge badge-danger'  >Tidak valid</span></span>";	
+				break;																
+				default: // proses status 0 order
+					$value->status_proces2="<span id='td_penjemputan_{$value->transaction_code}'><span  class='badge badge-dark' >Order</span></span>";
+					break;
 			}
-			else
-			{
-				$value->status='<h6><span class="badge badge-danger">Menunggu Pembayaran</span></h6>';	
-			}		
+
+			$value->status_payment2=$value->status_payment==2?"<span class='badge badge-success' id='statusBayar{$value->transaction_code}'>Dibayar</span>":"<span class='badge badge-danger' id='statusBayar{$value->transaction_code}'>Belum</span>";
+			
+						
+
 			$data[]=$value;
 			$no++;
 		}
@@ -73,6 +101,46 @@ class TransactionModel extends MY_Model{
 							"recordsTotal"=>count((array)$data)
 						);
 	}
+
+	public function detailRowChild($transactionCode)
+	{
+
+
+		$where = " where ts.transaction_code='{$transactionCode}' ";
+
+		
+		
+		$qry=$this->qry($where);
+		
+		
+		$getData=$this->db->query($qry)->row();
+		switch ($getData->status_proces) {
+			case '2':
+				$getData->status_proces2="<span id='td_penjemputan_{$getData->transaction_code}'><span id='td_penjemputan_{$getData->transaction_code}' class='badge badge-warning'>Penjemputan</span></span>";
+			break;
+			case '3':
+				$getData->status_proces2="<span id='td_penjemputan_{$getData->transaction_code}'><span  class='badge badge-warning' id='td_penjemputan_{$getData->transaction_code}' >Proses</span></span>";
+			break;
+			case '4':
+				$getData->status_proces2="<span id='td_penjemputan_{$getData->transaction_code}'><span  class='badge badge-warning' id='td_penjemputan_{$getData->transaction_code}' >Pengiriman</span></span>";
+			break;				
+			case '5':
+				$getData->status_proces2="<span id='td_penjemputan_{$getData->transaction_code}'><span  class='badge badge-success' id='td_penjemputan_{$getData->transaction_code}' >Selesai</span></span>";
+			break;				
+			case '6':
+				$getData->status_proces2="<span id='td_penjemputan_{$getData->transaction_code}'><span  class='badge badge-danger' id='td_penjemputan_{$getData->transaction_code}' >Tidak valid</span></span>";	
+			break;																
+			default: // proses status 0 order
+				$getData->status_proces2="<span id='td_penjemputan_{$getData->transaction_code}'><span  class='badge badge-dark' id='td_penjemputan_{$getData->transaction_code}' >Order</span></span>";
+				break;
+		}		
+
+
+		$getData->total_amount2="<span  id='td_total_amount{$getData->transaction_code}'>".formatUang($getData->total_amount)."</span>";
+		$getData->total_weight2="<span  id='td_total_weight{$getData->transaction_code}'>".formatUang($getData->total_weight)."</span>";		
+
+		return $getData;
+	}	
 
 	public function downloadExcel()
 	{
@@ -129,10 +197,32 @@ class TransactionModel extends MY_Model{
 
 	public function qry($where="")
 	{
-		$qry="SELECT *,
-	    		(select count(id) from transaction_detail where transaction_code=tr.transaction_code) as total_barang
-				FROM transaction tr
-				{$where}
+		$qry="		
+			SELECT 
+				ts.transaction_code,
+				ts.status_payment ,
+				ts.status_proces,
+				ts.email,
+				ts.no_hp,
+				ps.name as product_service_name,
+				ts.price_product_service ,
+				ts.price_service_delivery ,
+				ts.price_service_pickup ,
+				ts.total_amount ,
+				ts.total_weight ,
+				ts.address ,
+				ts.created_on,
+				ts.date_pickup ,
+				ts.time_pickup ,
+				s.name as layanan_antar,
+				ts.user_transaction,
+				s2.name as layanan_jemput
+
+			from transaction_service ts 
+			left join service s on ts.id_service_delivery =s.id 
+			left join service s2 on ts.id_service_pickup =s2.id 
+			left join product_service  ps on ts.id_product_service =ps.id 
+			{$where}
 			";
 
 		return $qry;
@@ -151,6 +241,7 @@ class TransactionModel extends MY_Model{
 			    py.amount as total_transfer,
 			    py.path ,
 			    tr.email,
+				ts.user_transaction,
 			    trd.price
 			FROM transaction tr
 			join transaction_detail trd on tr.transaction_code=trd.transaction_code

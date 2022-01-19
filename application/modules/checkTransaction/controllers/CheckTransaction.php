@@ -20,8 +20,7 @@ class CheckTransaction extends MY_Controller{
 
         $data = array(
             'title'    => 'Cek Transaksi',
-            'content'  => 'index',
-            'category' => $this->transaction->select_data("operator", "  ")->result()
+            'content'  => 'index'
 
         );
 

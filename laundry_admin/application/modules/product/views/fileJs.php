@@ -18,15 +18,33 @@
 
 		    	columns:[
 		    			{data:'name', className:'text-left'},
-		    			{data:'category_name',className:'text-left'},
-		    			{data:'operator_name',className:'text-left'},
-		    			{data:'saldo',className:'text-right'},
 		    			{data:'price',className:'text-right'},
-		    			{data:'type',className:'text-left'},
+						{data:'unit_weight',className:'text-left'},
 		    			{data:'description',className:'text-left'},
+						{data:'status',className:'text-center'},
 		    			{data:'action', className:'text-center'}
 		    	],
-		    	searching:false
+		    	searching:false,
+				language: {
+                            "aria": {
+                                "sortAscending": ": activate to sort column ascending",
+                                "sortDescending": ": activate to sort column descending"
+                            },
+                            "processing": "Proses.....",
+                            "emptyTable": "Tidak ada data",
+                            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                            "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                            "infoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+                            "lengthMenu": "Menampilkan _MENU_",
+                            "search": "Pencarian :",
+                            "zeroRecords": "Tidak ditemukan data yang sesuai",
+                            "paginate": {
+                                "previous": "Sebelumnya",
+                                "next": "Selanjutnya",
+                                "last": "Terakhir",
+                                "first": "Pertama"
+                            }
+                        },				
 		    });
 
 		}
@@ -71,20 +89,15 @@
 
 				var getId=$(`#${id}`).attr("data-id");
 				var getName=$(`#${id}`).attr("data-name");
-				var getCategory=$(`#${id}`).attr("data-category");
-				var getOperator=$(`#${id}`).attr("data-operator");
-				var getSaldo=$(`#${id}`).attr("data-saldo");
 				var getPrice=$(`#${id}`).attr("data-price");
-				var getType=$(`#${id}`).attr("data-type");
+				var getWeight=$(`#${id}`).attr("data-weight");
 				var getDescription=$(`#${id}`).attr("data-description");
+
 
 				$("#idEdit").val(getId);
 				$("#nameEdit").val(getName);
-				$('#categoryEdit').val(getCategory);
-				$('#operatorEdit').val(getOperator);
-				$('#saldoEdit').val(getSaldo);
 				$('#priceEdit').val(getPrice);
-				$('#typeEdit').val(getType);
+				$('#unitWeightEdit').val(getWeight);
 				$('#descriptionEdit').val(getDescription);
 
 				$('#modalEdit').modal('show')
@@ -127,11 +140,32 @@
 			});		
 		}
 
-		getDelete(id)
+		getDelete(id, status)
 		{
 			$(document).ready(function(){
 
+				let pesanData ="";
+				let buttondeleteTxt=""
+				
+				switch (status) {
+					case '-5':
+						 pesanData +=` Apakah anda Yakin ingin Menghapus data ini `
+						 buttondeleteTxt ="Hapus"
+					break;
+					case '0':
+						pesanData +=` Apakah anda Yakin ingin Nonaktifkan Data Ini `
+						buttondeleteTxt="Non Aktifkan"
+					break;
+					default:
+						pesanData +=` Apakah anda Yakin ingin Aktifkan Data Ini `
+						buttondeleteTxt ="Aktifkan"
+						break;
+				}
+
 				$("#idDelete").val(id);
+				$("#statusDelate").val(status);
+				$("#pesanData").html(pesanData);
+				$("#delete").html(buttondeleteTxt);
 				$('#modalDelete').modal('show');
 			})
 

@@ -11,26 +11,10 @@ class Product extends MY_Controller{
 
 	public function index(){   
 
-		$category=$this->product->select_data("category"," order by name asc ")->result();
-		$operator=$this->product->select_data("operator"," order by name asc ")->result();
-
-		$dataCategory[""]="Pilih";
-		$dataOperator[""]="Pilih";
-		foreach ($category as $key => $value) {
-			$dataCategory[$value->id]=strtoupper($value->name);
-
-		}
-
-		foreach ($operator as $key => $value) {
-			$dataOperator[$value->id]=strtoupper($value->name);
-
-		}		
 		
         $data = array(
-            'title'    => 'Product',
+            'title'    => 'Product Layanan',
             'content'  => 'index',
-            'category'=>$dataCategory,
-            'operator'=>$dataOperator,            
 
         );
 
@@ -50,24 +34,25 @@ class Product extends MY_Controller{
 	public function actionAdd()
 	{
 		$name=trim($this->input->post('name')); 
-		$category=trim($this->input->post('category')); 
-		$operator=trim($this->input->post('operator')); 
-		$saldo=trim($this->input->post('saldo')); 
 		$price=trim($this->input->post('price')); 
-		$type=trim($this->input->post('type')); 
+		$unitWeight=trim($this->input->post('unitWeight')); 
 		$description=trim($this->input->post('description')); 
 
+        $this->form_validation->set_rules('name', 'Nama ', 'required');
+        $this->form_validation->set_rules('price', 'Harga ', 'required');
+        $this->form_validation->set_rules('unitWeight', 'Berat ', 'required');
+		$this->form_validation->set_rules('description', 'Keterangan ', 'required');	
 		
-		if(
-			empty($name) or
-			empty($category) or
-			empty($operator) or
-			empty($saldo) or
-			empty($price) or
-			// empty($type) or
-			empty($description) )
+		$this->form_validation->set_message('required','%s harus diisi!');
+
+		$check=$this->product->select_data("product_service", " where upper(name)=upper('{$name}') and status!='-5' ");
+		
+		if ($this->form_validation->run() === false) {
+			$res=array("code"=>0, "message"=>validation_errors());
+        }
+		else if($check->num_rows()>0)
 		{
-			$res=array("code"=>0, "message"=>'Data Masih ada yang kosong ');
+			$res=array("code"=>0, "message"=>"Nama Sudah ada ");
 		}
 		else
 		{
@@ -75,19 +60,16 @@ class Product extends MY_Controller{
 
 			$data=array(
 					"name"=>$name,
-					"id_category"=>$category,
-					"id_operator"=>$operator,
-					"saldo"=>$saldo,
 					"price"=>$price,
-					"type"=>$type,
+					"unit_weight"=>$unitWeight,
 					"description"=>$description,
+					"status"=>1,
 					"created_on"=>date("Y-m-d H:i:s"),
 					"created_by"=>$this->session->userdata("username")
 
 				);
-			// print_r($data); exit;
 
-			$this->product->insert_data("product",$data);
+			$this->product->insert_data("product_service",$data);
 
             if ($this->db->trans_status() === FALSE)
             {
@@ -109,56 +91,56 @@ class Product extends MY_Controller{
 
 	public function actionEdit()
 	{
-		$name=trim($this->input->post("nameEdit"));
 		$id=trim($this->input->post("idEdit")); 
-		$category=trim($this->input->post('categoryEdit')); 
-		$operator=trim($this->input->post('operatorEdit')); 
-		$saldo=trim($this->input->post('saldoEdit')); 
-		$price=trim($this->input->post('priceEdit')); 
-		$type=trim($this->input->post('typeEdit')); 
-		$description=trim($this->input->post('descriptionEdit')); 
+		$name=trim($this->input->post('name')); 
+		$price=trim($this->input->post('price')); 
+		$unitWeight=trim($this->input->post('unitWeight')); 
+		$description=trim($this->input->post('description')); 
 
+        $this->form_validation->set_rules('name', 'Nama ', 'required');
+		$this->form_validation->set_rules('idEdit', 'Id ', 'required');
+        $this->form_validation->set_rules('price', 'Harga ', 'required');
+        $this->form_validation->set_rules('unitWeight', 'Berat ', 'required');
+		$this->form_validation->set_rules('description', 'Keterangan ', 'required');	
 		
-		if(
-			empty($name) or
-			empty($category) or
-			empty($operator) or
-			empty($saldo) or
-			empty($price) or
-			// empty($type) or
-			empty($description) )
+		$this->form_validation->set_message('required','%s harus diisi!');
+
+		$check=$this->product->select_data("product_service", " where upper(name)=upper('{$name}') and status!='-5' and id <>{$id} ");
+		
+		if ($this->form_validation->run() === false) {
+			$res=array("code"=>0, "message"=>validation_errors());
+        }
+		else if($check->num_rows()>0)
 		{
-			$res=array("code"=>0, "message"=>'Data Masih ada yang kosong ');
+			$res=array("code"=>0, "message"=>"Nama Sudah ada ");
 		}
 		else
 		{
 			$this->db->trans_begin();
 
-				$data=array(
+			$data=array(
 					"name"=>$name,
-					"id_category"=>$category,
-					"id_operator"=>$operator,
-					"saldo"=>$saldo,
 					"price"=>$price,
-					"type"=>$type,
+					"unit_weight"=>$unitWeight,
 					"description"=>$description,
 					"updated_on"=>date("Y-m-d H:i:s"),
 					"updated_by"=>$this->session->userdata("username")
 
 				);
-			
-			// print_r($data);exit;
-			$this->product->update_data("product",$data, " id=$id");
+
+
+			// $this->product->insert_data("product_service",$data);
+			$this->product->update_data("product_service",$data, " id=$id");
 
             if ($this->db->trans_status() === FALSE)
             {
                 $this->db->trans_rollback();
-                $res=array("code"=>0, "message"=>'Gagal Edit Data ');
+                $res=array("code"=>0, "message"=>'Gagal Simpan Data ');
             }
             else 
             {
                 $this->db->trans_commit();
-                $res=array("code"=>1, "message"=>'Berhasil Edit data ');
+                $res=array("code"=>1, "message"=>'Berhasil Simpan data ');
             }
 
 
@@ -167,19 +149,30 @@ class Product extends MY_Controller{
 		echo json_encode($res);
 	}
 
+
+
 	public function actionDelete()
 	{
-		$id=trim($this->input->post("idDelete"));
+		$id=trim($this->input->post("idDelate"));
+		$statusDelate=trim($this->input->post("statusDelate"));
 
-		if(empty($id))
+		if(empty($id) or $statusDelate=="" )
 		{
 			$res=array("code"=>0, "message"=>'Data Masih ada yang kosong ');
 		}
 		else
 		{
+			$data=array(
+				"status"=>$statusDelate,
+				"updated_on"=>date("Y-m-d H:i:s"),
+				"updated_by"=>$this->session->userdata("username")
+
+			);
+
+			// print_r($data); exit;
 			$this->db->trans_begin();
 
-			$this->product->delete_data("product", "id=$id");
+			$this->product->update_data("product_service", $data, "id=$id");
 
             if ($this->db->trans_status() === FALSE)
             {

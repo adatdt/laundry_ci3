@@ -10,10 +10,18 @@ class User extends MY_Controller{
 
 	public function index(){   
 
+		$getUserGroup=$this->user->select_data("user_group"," where status=1 order by name asc")->result();
+		
+		$dataUserGroup[""]="Pilih";
+		foreach ($getUserGroup as $key => $value) {
+			$dataUserGroup[$value->id]=$value->name;
+		}
+
 		
         $data = array(
             'title'    => 'user',
-            'content'  => 'index',            
+            'content'  => 'index',   
+			'dataUserGroup'=>$dataUserGroup,         
 
         );
 
@@ -38,10 +46,13 @@ class User extends MY_Controller{
 		$password=trim($this->input->post("password"));
 		$phoneNumber=trim($this->input->post("phoneNumber"));
 		$idGroup=trim($this->input->post("idGroup"));
+		$email=trim($this->input->post("email"));
 
 		$data=array(
 					"name"=>$name,
 					"address"=>$address,
+					"email"=>$email,
+					"status"=>1,
 					"password"=>md5($password),
 					"username"=>$username,
 					"no_hp"=>$phoneNumber,
@@ -138,7 +149,7 @@ class User extends MY_Controller{
 		echo json_encode($res);
 	}
 
-	public function actionDelete()
+	public function actionDelete_16012022()
 	{
 		$id=trim($this->input->post("idDelete"));
 
@@ -168,6 +179,48 @@ class User extends MY_Controller{
 
 		echo json_encode($res);
 	}	
+
+	public function actionDelete()
+	{
+		$id=trim($this->input->post("idDelete"));
+		$statusDelete=trim($this->input->post("statusDelete"));
+
+		// print_r($this->input->post()); exit;
+
+		if(empty($id) or $statusDelete=="" )
+		{
+			$res=array("code"=>0, "message"=>'Data Masih ada yang kosong ');
+		}
+		else
+		{
+			$data=array(
+				"status"=>$statusDelete,
+				"updated_on"=>date("Y-m-d H:i:s"),
+				"updated_by"=>$this->session->userdata("username")
+
+			);
+
+			// print_r($data); exit;
+			$this->db->trans_begin();
+
+			$this->user->update_data("user", $data, "id=$id");
+
+            if ($this->db->trans_status() === FALSE)
+            {
+                $this->db->trans_rollback();
+                $res=array("code"=>0, "message"=>'Gagal Hapus Data ');
+            }
+            else 
+            {
+                $this->db->trans_commit();
+                $res=array("code"=>1, "message"=>'Berhasil Hapus data ');
+            }
+
+
+		}
+
+		echo json_encode($res);
+	}		
 
 
 }

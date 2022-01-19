@@ -19,7 +19,8 @@
 		    			{data:'username', className:'text-left'},
 		    			{data:'address', className:'text-left'},
 		    			{data:'no_hp', className:'text-left'},
-		    			// {data:'need_number',className:'text-center'},
+						{data:'email', className:'text-left'},
+		    			{data:'status',className:'text-center'},
 		    			{data:'action', className:'text-center'}
 		    	],
 		    	searching:false
@@ -72,6 +73,7 @@
 				var phoneNumber=$(`#${id}`).attr("data-phoneNumber");
 				var idGroup=$(`#${id}`).attr("data-idGroup");
 				var username=$(`#${id}`).attr("data-username");
+				var email=$(`#${id}`).attr("data-email");
 
 				$("#idEdit").val(getId);
 				$("#nameEdit").val(getName);
@@ -79,13 +81,10 @@
 				$("#addressEdit").val(address);
 				$("#phoneNumberEdit").val(phoneNumber);
 				$("#usernameEdit").val(username);
+				$("#emailEdit").val(email);
 
-				var groupHtml=`
-					<option value="">Pilih</option>
-					<option value="1" selected>Admin</option>
 
-				`
-				$("#idGroupEdit").html(groupHtml);
+				$("#idGroupEdit").val(idGroup);
 
 				$('#modalEdit').modal('show')
 			})
@@ -127,7 +126,7 @@
 			});		
 		}
 
-		getDelete(id)
+		getDelete_16102022(id)
 		{
 			$(document).ready(function(){
 
@@ -135,7 +134,37 @@
 				$('#modalDelete').modal('show');
 			})
 
-		}			
+		}
+		getDelete(id, status)
+		{
+			$(document).ready(function(){
+
+				let pesanData ="";
+				let buttondeleteTxt=""
+				
+				switch (status) {
+					case '-5':
+						 pesanData +=` Apakah anda Yakin ingin Menghapus data ini `
+						 buttondeleteTxt ="Hapus"
+					break;
+					case '0':
+						pesanData +=` Apakah anda Yakin ingin Nonaktifkan Data Ini `
+						buttondeleteTxt="Non Aktifkan"
+					break;
+					default:
+						pesanData +=` Apakah anda Yakin ingin Aktifkan Data Ini `
+						buttondeleteTxt ="Aktifkan"
+						break;
+				}
+
+				$("#idDelete").val(id);
+				$("#statusDelete").val(status);
+				$("#pesanData").html(pesanData);
+				$("#delete").html(buttondeleteTxt);
+				$('#modalDelete').modal('show');
+			})
+
+		}								
 		actionDelete(data, url)
 		{
 			$.ajax({

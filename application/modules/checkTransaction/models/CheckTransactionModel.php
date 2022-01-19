@@ -64,11 +64,12 @@ class CheckTransactionModel extends MY_Model{
 		{
 			$qryTracking=" 
 				SELECT 
-					mstd.name
+					distinct mstd.name
 				from transaction_service_detail tsd 
 				join master_status_transaction_detail mstd on tsd.status_proces=mstd.id
-				where tsd.status=1 and mstd.status=1 
-				and tsd.transaction_code='{$noTrans}'
+				where 
+				-- tsd.status=1 and mstd.status <>'-5' 
+				 tsd.transaction_code='{$noTrans}'
 				order by tsd.id asc
 			";
 			

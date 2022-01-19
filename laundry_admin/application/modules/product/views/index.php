@@ -35,12 +35,10 @@
 			    <thead>
 			        <tr>
 			            <th>Nama Product</th>
-			            <th>Kategory</th>
-			            <th>Operator</th>
-			            <th>Saldo</th>
 			            <th>Harga</th>
-			            <th>Ukuran Tipe</th>
+			            <th>berat per Kg</th>
 			            <th>Keterangan</th>
+						<th>Status</th>
 			            <th>Aksi</th>
 			        </tr>
 			    </thead>
@@ -50,202 +48,9 @@
 
 </div>
 
-
-	<!-- Modal  add-->
-	<div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	    <div class="modal-lg modal-dialog modal-dialog-centered" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h5 class="modal-title" id="modalAddTitle">Tambah <?= $title ?></h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
-	                </button>
-	            </div>
-	            <form action="<?= site_url()?>product/actionAdd" method="post" id="formData">
-	            <div class="modal-body">
-	                
-	                
-						<div class="row">
-							<div class="col-md-12">
-								
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Nama Product<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="name" placeholder="Nama" name="name"  required>
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Kategori<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <?= form_dropdown("category",$category,"",' class="form-control" id="category"   required ') ?>
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Operator<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <?= form_dropdown("operator",$operator,"",' class="form-control" id="operator"  required ') ?>
-								    </div>
-								</div>		
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Saldo<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="saldo" placeholder="Saldo" name="saldo"  required onkeypress="return isNumberKey(event)" >
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Harga<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="price" placeholder="Harga" name="price"  required onkeypress="return isNumberKey(event)" >
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Ukuran Type :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="type" placeholder="Ukuran Tipe" name="type"  required>
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Keterangan<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="description" placeholder="Keterangan" name="description"  required>
-								    </div>
-								</div>																			
-
-
-							</div>
-
-						</div>
-			
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-	                <button type="button" class="btn btn-success" id="saveAdd"> Simpan</button>
-	            </div>
-	            </form>
-	        </div>
-	    </div>
-	</div> 	
-
-
-	<!-- Modal  edit-->
-	<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	    <div class="modal-lg modal-dialog modal-dialog-centered" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h5 class="modal-title" id="modalEditTitle">Edit <?= $title ?></h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
-	                </button>
-	            </div>
-	            <form action="<?= site_url()?>product/actionEdit" method="post" id="formDataEdit">
-	            <div class="modal-body">
-	                
-	                
-						<div class="row">
-							<div class="col-md-12">
-								
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Nama Product<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="nameEdit" placeholder="Nama" name="nameEdit"  required >
-								      <input type="hidden"  id="idEdit" name="idEdit"  required >
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Kategori<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <?= form_dropdown("categoryEdit",$category,"",' class="form-control" id="categoryEdit"   required ') ?>
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Operator<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <?= form_dropdown("operatorEdit",$operator,"",' class="form-control" id="operatorEdit"  required ') ?>
-								    </div>
-								</div>		
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Saldo<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="saldoEdit" placeholder="Saldo" name="saldoEdit"  required onkeypress="return isNumberKey(event)" >
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Harga<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="priceEdit" placeholder="Harga" name="priceEdit"  required onkeypress="return isNumberKey(event)" >
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Ukuran Type :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="typeEdit" placeholder="Ukuran Tipe" name="typeEdit"  required>
-								    </div>
-								</div>
-
-								<div class="form-group row">
-								    <label for="name" class="col-sm-3 col-form-label">Keterangan<span style="color: red">*</span> :</label>
-								    <div class="col-sm-9">
-								      <input type="text" class="form-control" id="descriptionEdit" placeholder="Keterangan" name="descriptionEdit"  required>
-								    </div>
-								</div>																			
-
-
-							</div>
-
-						</div>
-			
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-	                <button type="button" class="btn btn-success" id="saveEdit"> Simpan</button>
-	            </div>
-	            </form>
-	        </div>
-	    </div>
-	</div> 		
-
-
-
-	<!-- Modal  delete-->
-	<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	    <div class="modal-lg modal-dialog modal-dialog-centered" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h5 class="modal-title" id="modalEditTitle"></h5>
-	            </div>
-
-	            <div class="modal-body">
-	                	                
-						<div class="row">
-							<div class="col-md-12 text-center">								
-								Apakah anda Yakin ingin Menghapus data ini
-								<input type="hidden" name="idDelete" id="idDelete">
-							</div>
-
-						</div>
-			
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-	                <button type="button" class="btn btn-success" id="delete"> Hapus</button>
-	            </div>
-	            </form>
-	        </div>
-	    </div>
-	</div> 		
-
-
+<?php include "add.php" ?>
+<?php include "edit.php" ?>
+<?php include "delete.php" ?>
 <?php include "fileJs.php" ?>
 
 <script type="text/javascript">
@@ -290,7 +95,10 @@
 	    });
 
 	    $("#delete").on("click",function(){
-	    	var data ={idDelete:$("#idDelete").val()};
+	    	var data ={
+						idDelate:$("#idDelete").val(),
+						statusDelate:$("#statusDelate").val()
+					};
 	    	var url ="<?= site_url()?>product/actionDelete";
 	    	myData.actionDelete(data, url)
 	    });	    	    

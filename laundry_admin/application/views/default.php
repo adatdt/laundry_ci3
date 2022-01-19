@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
 <!--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
@@ -122,12 +124,22 @@
                     <a class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
             
                     <div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
-                        <a href="<?=site_url() ?>home" class="dropdown-item">home</a>
-                        <a href="<?=site_url() ?>category" class="dropdown-item">Kategori</a>
-                        <a href="<?=site_url() ?>operator" class="dropdown-item">Operator</a>
-                        <a href="<?=site_url() ?>transaction" class="dropdown-item">Transaksi</a>                    
-                        <a href="<?=site_url() ?>user" class="dropdown-item">User</a>
-                        <a href="<?=site_url() ?>product" class="dropdown-item">Produk</a>                              
+
+                    <?php 
+                        $dataMenu= getMenu();
+                        if(count((array)$dataMenu))
+                        {
+                            foreach ($dataMenu as $key => $value) {
+                                $htmlMenu='
+                                <a href="'.site_url().$value->url.'" class="dropdown-item">'.$value->name.'</a>
+                                ';
+
+                                echo $htmlMenu;
+                            }
+                        }
+                    ?>                    
+                        
+
                     </div>
 
                 </li>
@@ -151,48 +163,30 @@
 
 
                 <div id='submenu1' class="sidebar-submenu">
-                    <a href="<?=site_url() ?>home" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">home</span>
-                    </a>
-                    <a href="<?=site_url() ?>category" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Kategori</span>
-                    </a>
-                    <a href="<?=site_url() ?>operator" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Operator</span>
-                    </a>
-                    <a href="<?=site_url() ?>transaction" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Transaksi</span>
-                    </a>                    
-                    <a href="<?=site_url() ?>user" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">User</span>
-                    </a>
-                    <a href="<?=site_url() ?>product" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Produk</span>
-                    </a>                                                                                                    
+
+                    <?php 
+                        if(count((array)$dataMenu))
+                        {
+                            foreach ($dataMenu as $key => $value) {
+                                $htmlMenu='
+                                <a href="'.site_url().$value->url.'" class="list-group-item list-group-item-action bg-dark text-white">
+                                    <span class="menu-collapsed">'.$value->name.'</span>
+                                </a>
+                                ';
+
+                                echo $htmlMenu;
+                            }
+                        }
+                    ?>
+                  
                 </div>
-
-
-<!--                 <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-start align-items-center">
-                        <span class="fa fa-user fa-fw mr-3"></span>
-                        <span class="menu-collapsed">Profile</span>
-                        <span class="submenu-icon ml-auto"></span>
-                    </div>
-                </a>
-                <div id='submenu2' class="collapse sidebar-submenu">
-                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Settings</span>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Password</span>
-                    </a>
-                </div>   -->          
                
             </ul>
-        </div> <!-- End Sidebar -->
+        </div> 
+        <!-- End Sidebar -->
 
         <!-- MAIN -->
-        <div class="col">
+        <div class="col-md-10" style="margin-left:-6px;">
             <br>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">

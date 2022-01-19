@@ -140,50 +140,11 @@
         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
           <!-- Content -->
           <h6 class="text-uppercase fw-bold mb-4">
-            <i class="fas fa-gem me-3"></i>Counter Pulsa Online
+            <i class="fas fa-gem me-3 "></i>Laudry Kahfi
           </h6>
-          <p>
-            Transaksi Pulsa dan Paket Data dengan Kemudahan bertransaksi.
+          <p class="text-left" >
+             Melayani Jasa laundry pakaian, dengan layanan express, reguler dan disini juga tersedia jasa setrika pakaian
           </p>
-        </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
-        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            Products
-          </h6>
-          <p>
-            <a href="#!" class="text-reset">Pulsa</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Paket Data</a>
-          </p>
-        </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
-        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            Bank Transfer
-          </h6>
-          <p>
-            <img src="<?= base_url()?>assets/img/bca.jpg"  width="100px" />
-          </p>
-          <p>
-            <img src="<?= base_url()?>assets/img/bni.png" width="100px" />
-          </p>
-          <p>
-            <img src="<?= base_url()?>assets/img/mandiri.jpg" width="100px" />
-          </p>
-          <p>
-            <img src="<?= base_url()?>assets/img/ovo.jpg" width="100px" />
-          </p>
-          <p>
-            <img src="<?= base_url()?>assets/img/linkaja.png" width="100px" />
-          </p>          
         </div>
         <!-- Grid column -->
 
@@ -193,12 +154,8 @@
           <h6 class="text-uppercase fw-bold mb-4">
             Contact
           </h6>
-          <p><i class="fas fa-home me-3"></i> Jakarta, Warung Jati</p>
-          <p>
-            <i class="fa fa-envelope me-3"></i>
-            tugaskelompoknuri@gmail.com
-          </p>
-          <p><i class="fa fa-phone me-3"></i> + 0810090000</p>
+          <p class="text-left" ><i class="fa fa-home me-3"></i> Bekasi, Rt 03 RW 25, cibitung - Bekasi 17520</p>
+          <p class="text-left" ><i class="fa fa-phone me-3"></i> + 0810090000</p>
           <!-- <p><i class="fa fa-print me-3"></i> + 01 234 567 89</p> -->
         </div>
         <!-- Grid column -->
@@ -210,8 +167,8 @@
 
   <!-- Copyright -->
   <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-    © 2021 Copyright:
-    <a class="text-reset fw-bold" href="#">Kelompok 10 Tugas Nusa Mandiri</a>
+    © 2022 Copyright:
+    <a class="text-reset fw-bold" href="#">Skripsi Nusa Mandiri tahun 2022</a>
   </div>
   <!-- Copyright -->
 </footer>

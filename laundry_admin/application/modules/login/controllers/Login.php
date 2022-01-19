@@ -30,7 +30,7 @@ class Login extends MY_Controller{
 			exit;
 		}
 
-		$checkUsername=$this->login->select_data("user"," where username='{$username}' ");
+		$checkUsername=$this->login->select_data("user"," where username='{$username}' and status=1 and id_group !=2  ");
 
 		$getUser=$checkUsername->row();
 		if($checkUsername->num_rows()<1)

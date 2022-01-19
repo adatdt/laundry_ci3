@@ -28,6 +28,7 @@ class UserModel extends MY_Model{
 			$where .= " and ( 
 							name like '%{$cari}%' or
 							username like '%{$cari}%' or
+							email like '%{$cari}%' or
 							no_hp like '%{$cari}%' or
 							address like '%{$cari}%' 
 
@@ -42,8 +43,24 @@ class UserModel extends MY_Model{
 
 			$value->action ="";
 
-			$value->action .=" <button class='btn btn-danger btn-sm btnDelete' onClick=myData.getDelete('$value->id') title='Hapus' ><i class=' fa fa-trash'></i></button>";
-			$value->action .=" <button class='btn btn-warning btn-sm btnEdit' id='btnEdit".$no."' onClick=myData.getEdit('btnEdit".$no."') data-id='".$value->id."' data-name='".$value->name."' data-address='{$value->address}'  data-phoneNumber='{$value->no_hp}' data-idGroup='{$value->id_group}' data-username='{$value->username}'  title='Edit' ><i class=' fa fa-pencil' ></i></button>";
+			
+			// $value->action .=" <button class='btn btn-danger btn-sm btnDelete' onClick=myData.getDelete('$value->id') title='Hapus' ><i class=' fa fa-trash'></i></button>";
+			$value->action .=" <button class='btn btn-danger btn-sm btnDelete' onClick=myData.getDelete('$value->id','-5') title='Hapus' ><i class=' fa fa-trash'></i></button>";
+			
+			if($value->status==1)
+			{
+				$value->action .=" <button class='btn btn-warning btn-sm btnEdit' id='btnEdit".$no."' onClick=myData.getEdit('btnEdit".$no."') data-id='".$value->id."' data-name='".$value->name."' data-address='{$value->address}'  data-phoneNumber='{$value->no_hp}' data-idGroup='{$value->id_group}' data-username='{$value->username}' data-email='{$value->email}'  title='Edit' ><i class=' fa fa-pencil' ></i></button>";
+				$value->action .=" <button class='btn btn-danger btn-sm btnDelete' onClick=myData.getDelete('$value->id','0') title='Non Aktif' ><i class='fa fa-ban' aria-hidden='true'></i></button>";
+				
+			}
+			else
+			{
+				$value->action .=" <button class='btn btn-success btn-sm btnDelete' onClick=myData.getDelete('$value->id','1') title='Aktif' ><i class='fa fa-check' aria-hidden='true'></i></button>";
+
+			}
+
+			$value->status=$value->status==1?'<span class="badge badge-success">Aktif</span>':'<span class="badge badge-danger">Non Aktif</span>';
+
 
 			$data[]=$value;
 			$no++;

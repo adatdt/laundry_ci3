@@ -21,7 +21,7 @@ class ProductModel extends MY_Model{
 	{
 		$cari =trim($this->input->post("cari"));
 
-		$where = " where id is not null ";
+		$where = " where status !='-5' ";
 
 		if(!empty($cari))
 		{
@@ -29,15 +29,14 @@ class ProductModel extends MY_Model{
 		}
 
 
-		$qry="SELECT 
-				ct.name as category_name,
-			    op.name as operator_name,
-				p.* 
-			FROM product p 
-			left join category ct on p.id_category=ct.id
-			left join operator op on p.id_operator=op.id
-			order by p.id desc
+		$qry="	SELECT
+					* 
+				from product_service ps 
+				{$where}
+				order by id desc
 				";
+
+		// die($qry); exit;
 
 		$getData=$this->db->query($qry)->result();
 		$data=array();
@@ -46,16 +45,30 @@ class ProductModel extends MY_Model{
 		foreach ($getData as $key => $value) {
 
 			$value->action ="";
-			$value->action .=" <button class='btn btn-danger btn-sm btnDelete' onClick=myData.getDelete('$value->id') title='Hapus' ><i class=' fa fa-trash'></i></button>";
-			$value->action .=" <button class='btn btn-warning btn-sm btnEdit' id='btnEdit".$no."' onClick=myData.getEdit('btnEdit".$no."') data-id='".$value->id."' 
-				data-name='".$value->name."' 
-				data-category='".$value->id_category."'
-				data-operator='".$value->id_operator."'
-				data-saldo='".$value->saldo."'
-				data-price='".$value->price."'
-				data-type='".$value->type."'
-				data-description='".$value->description."'
-				title='Edit' ><i class=' fa fa-pencil' ></i></button>";
+			$value->action .=" <button class='btn btn-danger btn-sm btnDelete' onClick=myData.getDelete('$value->id','-5') title='Hapus' ><i class=' fa fa-trash'></i></button>";
+
+			if($value->status==1)
+			{
+
+				$value->action .=" <button class='btn btn-danger btn-sm btnDelete' onClick=myData.getDelete('$value->id','0') title='Non Aktif' ><i class='fa fa-ban' aria-hidden='true'></i></button>";
+				$value->action .=" <button class='btn btn-warning btn-sm btnEdit' id='btnEdit".$no."' onClick=myData.getEdit('btnEdit".$no."') data-id='".$value->id."' 
+					data-name='".$value->name."' 
+					data-price='".$value->price."'
+					data-weight='".$value->unit_weight."'  
+					data-description='".$value->description."' 
+					title='Edit' ><i class=' fa fa-pencil' ></i></button>";
+
+				$value->status="<span class='badge badge-success'>Aktif</span> ";
+			}
+			else
+			{
+
+				$value->action .=" <button class='btn btn-success btn-sm btnDelete' onClick=myData.getDelete('$value->id','1') title='Aktif' ><i class='fa fa-check' aria-hidden='true'></i></button>";
+				$value->status="<span class='badge badge-danger'>Non Aktif</span> ";
+			}
+
+
+			$value->price=formatUang($value->price);
 
 			$data[]=$value;
 			$no++;

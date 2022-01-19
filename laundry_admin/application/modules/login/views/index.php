@@ -33,6 +33,13 @@
     .bot-pad{
         margin-bottom: 10px;
     }
+	body{
+		 background-color:#212529; 
+	}
+	.card-body{
+		background: rgb(2,0,36);
+		background: linear-gradient(357deg, rgba(2,0,36,1) 0%, rgba(9,53,121,1) 35%, rgba(0,212,255,1) 100%);
+	}
 
 #body-row {
     margin-left:0;
@@ -106,7 +113,7 @@
 		    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
 		        <div class="card card-signin my-5">
 			        <div class="card-body">
-			            <h5 class="card-title text-center">Sign In</h5>
+			            <h5 class="card-title text-center">Ruang Admin</h5>
 			            <form class="form-signin" id="form-login" action="<?= site_url() ?>login/actionLogin" method="post" >
 				            <div class="form-label-group">
 				                <label for="username">Username</label>
@@ -119,7 +126,7 @@
 				            </div>
 			              	<p></p>
 
-			              	<div class="btn btn-lg btn-primary btn-block text-uppercase" id="submit">Sign in</div>
+			              	<div class="btn btn-sm btn-primary btn-block text-uppercase" id="submit">Masuk</div>
 			              	<hr class="my-4">
 
 			            </form>
